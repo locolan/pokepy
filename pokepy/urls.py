@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'pokepy.views.index', name = 'index'),
     url(r'^search/', 'pokepy.views.search', name = 'search'),
-    url(r'^mew/', 'pokepy.views.mew' , name='mew'),
+    url(r'^search_result/', 'pokepy.views.search_result' , name='search_result'),
 ]

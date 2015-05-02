@@ -1,7 +1,16 @@
 <!DOCTYPE html>
 
-<ul>
-    {% for p in pokemon_list %}
-        <li>name: {{ p.name }} </li>
-    {% endfor %}
-</ul>        
+<!-- <div>     
+    <form action="/search_result/" method="post">
+        <label for="search_result">Search for Pokemon: </label>
+        <input id="search_result" type="text" name="search_result" value="Pikachu">
+        <input type="submit" value="OK">
+    </form>
+</div> -->
+<div>
+    <form action="/search/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit" />
+    </form>
+</div>
