@@ -1,25 +1,38 @@
 from django.db import models
 
-class search(models.Model):
-    query_text = models.CharField(max_length=50)
+class Search(models.Model):
+    query_text = models.CharField(max_length=50,default='default') 
+    def __str__(self):
+        return self.query_text
     
-class egg_groups(models.Model):
-    egg_group = models.CharField(max_length=50)
+#===============================================================================
+# class EggGroups(models.Model):
+#     egg_group = models.CharField(max_length=50,default='default')
+#     def __str__(self):
+#         return self.egg_group
+#===============================================================================
     
-class moves(models.Model):
-    move = models.CharField(max_length=50)
-    type = models.CharField(max_length=50)
+class Moves(models.Model):
+    move = models.CharField(max_length=50,default='default')
+    type = models.CharField(max_length=50,default='default')
+    def __str__(self):
+        return self.move
     
     
-class abilities(models.Model):
-    ability = models.CharField(max_length=50)
+class Abilities(models.Model):
+    ability = models.CharField(max_length=50,default='default')
+    def __str__(self):
+        return self.ability
     
-class pokemon(models.Model):
-    name = models.CharField(max_length=50)
-    type1 = models.CharField(max_length=50)
-    type2 = models.CharField(max_length=50)
-    games = models.TextField()
-    description = models.TextField()
-    egg_group = models.ForeignKey(egg_groups)
-    moves = models.ManyToManyField(moves)
-    abilities = models.ManyToManyField(abilities)
+class Pokemon(models.Model):
+    name = models.CharField(max_length=50, default='bob')
+    type1 = models.CharField(max_length=50,default='normal')
+    type2 = models.CharField(max_length=50,default='normal')
+    games = models.TextField(default='default')
+    description = models.TextField(default='default')
+    egg_group = models.CharField(max_length=50,default='default')
+    moves = models.ManyToManyField(Moves)
+    abilities = models.ManyToManyField(Abilities)
+    def __str__(self):
+        return self.name
+    

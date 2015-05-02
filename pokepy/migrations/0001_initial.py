@@ -11,54 +11,39 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='abilities',
+            name='Abilities',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
-                ('ability', models.CharField(max_length=50)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('ability', models.CharField(default=b'default', max_length=50)),
             ],
         ),
         migrations.CreateModel(
-            name='egg_groups',
+            name='Moves',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
-                ('egg_group', models.CharField(max_length=50)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('move', models.CharField(default=b'default', max_length=50)),
+                ('type', models.CharField(default=b'default', max_length=50)),
             ],
         ),
         migrations.CreateModel(
-            name='moves',
+            name='Pokemon',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
-                ('move', models.CharField(max_length=50)),
-                ('type', models.CharField(max_length=50)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(default=b'bob', max_length=50)),
+                ('type1', models.CharField(default=b'normal', max_length=50)),
+                ('type2', models.CharField(default=b'normal', max_length=50)),
+                ('games', models.TextField(default=b'default')),
+                ('description', models.TextField(default=b'default')),
+                ('egg_group', models.CharField(default=b'default', max_length=50)),
+                ('abilities', models.ManyToManyField(to='pokepy.Abilities')),
+                ('moves', models.ManyToManyField(to='pokepy.Moves')),
             ],
         ),
         migrations.CreateModel(
-            name='pokemon',
+            name='Search',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
-                ('name', models.CharField(max_length=50)),
-                ('type1', models.CharField(max_length=50)),
-                ('type2', models.CharField(max_length=50)),
-                ('games', models.TextField()),
-                ('description', models.TextField()),
-                ('egg_group', models.ForeignKey(to='pokepy.egg_groups')),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('query_text', models.CharField(default=b'default', max_length=50)),
             ],
-        ),
-        migrations.CreateModel(
-            name='search',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
-                ('query_text', models.CharField(max_length=50)),
-            ],
-        ),
-        migrations.AddField(
-            model_name='moves',
-            name='pokemon',
-            field=models.ManyToManyField(to='pokepy.pokemon'),
-        ),
-        migrations.AddField(
-            model_name='abilities',
-            name='pokemon',
-            field=models.ManyToManyField(to='pokepy.pokemon'),
         ),
     ]
