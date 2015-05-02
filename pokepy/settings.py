@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'pokepy',
     'django_extensions',
+    'pykemon',
 )
 
 MIDDLEWARE_CLASSES = (
