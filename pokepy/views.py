@@ -54,7 +54,7 @@ def search(request):
     context = RequestContext(request, {
         'poke': poke,'move': move,'egg_group': egg_group,
     })
-    return HttpResponse()
+    return HttpResponse(template.render(context))
     
 #     poke = pykemon.get(pokemon=request.name)
 #     move = list(poke.moves.keys())[0]
