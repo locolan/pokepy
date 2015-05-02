@@ -1,23 +1,12 @@
 <!DOCTYPE html>
-
 <div>
-
-    <h1>{{ poke.name }} </h1>
-
-    <div>
-
-        <ul>
-            <li>{{ poke.name }}</li>
-            {% for f in poke.types %}
-                <li>Type: {{ f }}</li>
-            {% endfor %}
-            <li>A Move: {{ move }}</li>
-            <li>An Egg Group: {{ egg_group }}</li>
-            <li>National ID: {{ poke.id }}</li>
-        </ul>
-
-    </div>
-
+    <p>{{egg_group}}</p>
+    <p>{{move}}</p>
 </div>
-
-
+<div>
+    <form action="/search/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit" />
+    </form>
+</div>
