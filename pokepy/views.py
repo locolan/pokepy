@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.db import models
 from django import forms
-from .forms import SearchForm
+from pokepy.forms import SearchForm
 from importlib import import_module
 import pykemon,simplejson
 from pykemon import api,request,models
@@ -116,37 +116,46 @@ def search(request):
         return HttpResponse(template.render(context))
     n = request.session.get('pokename')
     print('n: ' + n)
-    p = Pokemon.objects.get(name__contains=n)
+    p = Pokemon.objects.get(name=n)
     print("p: " + p.name )
     try:
        
-        print("p.name: " + p.name)
+        print( "p.name: " + p.name )
         x = p.name.lower()
         o = (x + "_gen_6")
         print("o: " + o)
         i=5
         des_key=""
-        description=""
+        desc=""
         gen = "_gen_"
-        while(i>0):
-            h = str(i)
-            
-            try:
-                des_key = p.description.get( o )
-                description = des_key_validate( des_key, x )
-                if(description != False):
-                    break
-            except ResourceNotFoundError:
-                i-=1
-                print(i)
-            o = (x + gen + h)
+        h = str( i )
+        print( "h: " + h )
         
-        print(des_key)
+        foo = True
         
+        des_key = o
+        
+        for d in Pokemon.objects.raw('SELECT *, description FROM pokepy_pokemon WHERE name = %s', [p.name]):
+            print(type(d.description))
+            print(d.description)
+            mydict = dict((k.strip(), v.strip()) for k,v in (item.split(':') for item in  d.description.split(',')))
+            print("mydict:  " + str(mydict))
+            descr = mydict["\'" + des_key + "\'"]
+            adesc = str(descr).split('\'')
+            ldesc = adesc[1]
+            desc = str(ldesc).split('}')
+            print("description:  " + str(desc))
+        print( "des_key: " + des_key + "\ndescription: " + str(desc) )
+        
+        # SELECT descriptions FROM pokepy_pokemon 
+        # SELECT name FROM 
+        print(desc[0])
+        py = desc[0][7:]
+        d = pykemon.request._request(py)
 #         description = pykemon.get(description = des_key)
-        print(description)
+        
         print("am i even")
-        context = RequestContext(request, {'name':p.name, 'description':description,    
+        context = RequestContext(request, {'name':p.name, 'd':d,    
             'form': form,
         })
         
