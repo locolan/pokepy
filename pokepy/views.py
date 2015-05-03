@@ -8,7 +8,6 @@ from .forms import SearchForm
 from importlib import import_module
 import pykemon,simplejson
 from pykemon import api,request,models
-import re
 
 from .models import Pokemon, Moves, Abilities
 
@@ -29,19 +28,6 @@ def valid_address(request,form):
             
             i = 0
             kv=""
-            
-#             for key, value, kwargs in poke.types:
-#                 i = i + 1
-#                 kv = key
-#                 if(i==1):
-#                     t1 = kv
-#                 if(i==2):
-#                     t2 = kv
-                    
-#             p.add(type1=t1)
-#             p.add(type2=t2)
-            
-            #p.commit()
             p.save()
             m = poke.moves
             a = poke.abilities
@@ -56,28 +42,15 @@ def valid_address(request,form):
                 
             
             
-#             print(butt + " " + dong) 
-            
-            
             print("Here")
-            print(p.name + " A " + p.type1 + " Pokemon!")
-#             except: # KeyError:
-#                 pass
+            print(p.name + " a " + p.type1 + " Pokemon!")
             
-#             print(poke.name + " conversion to JSON")
-#             
-#             mylist = list(poke.get_queryset().values_list('code', flat=True))
-#             print("mark 1")
-#             json_data = json.dumps(mylist)
-#             print("mark 2")
-#             response = HttpResponse(json_data, content_type='application/json')
-#             print("mark 3")
             request.session['pokename'] = poke.name
             print("poke.name: " + poke.name)
             print("session pokename: " + request.session.get('pokename') )
             
         except(pykemon.ResourceNotFoundError):
-            print("Why does this keep happening?")
+            print("Why does this keep happening?") # INADEQUATE VALIDATION YOU FUCKER
 
         print("True")
         return True
@@ -135,11 +108,27 @@ def search(request):
     p = Pokemon.objects.get(name__contains=n)
     print("p: " + p.name )
     try:
-        #move = list(p.moves.keys())[0]
-        #egg_group = list(p.egg_groups.keys())[0]
         form = SearchForm()
-        r = re.compile(r"([\w]+_gen_5",)
-        description = p.description[]
+        
+        print(p.name)
+        
+        o = (p.name + "_gen_6")
+        des_key = p.description.get(o)
+        print(o)
+        i=5
+        while(i>0):
+            try: 
+                o = (p.name + "_gen_" + i)
+                des_key = p.description.get(o)
+                i-=5
+            except AttributeError:
+                i-=1
+            
+        
+        print(des_key)
+        
+        description = pykemon.get(description = des_key)
+        print(description)
         print("am i even")
         context = RequestContext(request, {'name':p.name, 'description':description,    
             'form': form,
