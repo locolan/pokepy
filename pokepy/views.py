@@ -10,6 +10,7 @@ import pykemon,simplejson
 from pykemon import api,request,models
 
 from .models import Pokemon, Moves, Abilities
+from pykemon.exceptions import ResourceNotFoundError
 
 
 def valid_address(request,form):
@@ -91,6 +92,15 @@ def index(request):
     return render(request, 'pokepy/index.html', {'form': form})
 
 
+def des_key_validate(des_key,x):
+    print("des_key: " + des_key)
+    print("x: " + x)
+    try:
+        d = pykemon.get(description_id=des_key)
+    except ResourceNotFoundError:
+        return False
+    return d
+
 def search(request): 
     form = SearchForm(request.POST)
     template = loader.get_template('pokepy/search.html')
@@ -105,29 +115,35 @@ def search(request):
         context = t
         return HttpResponse(template.render(context))
     n = request.session.get('pokename')
+    print('n: ' + n)
     p = Pokemon.objects.get(name__contains=n)
     print("p: " + p.name )
     try:
-        form = SearchForm()
-        
-        print(p.name)
-        
-        o = (p.name + "_gen_6")
-        des_key = p.description.get(o)
-        print(o)
+       
+        print("p.name: " + p.name)
+        x = p.name.lower()
+        o = (x + "_gen_6")
+        print("o: " + o)
         i=5
+        des_key=""
+        description=""
+        gen = "_gen_"
         while(i>0):
-            try: 
-                o = (p.name + "_gen_" + i)
-                des_key = p.description.get(o)
-                i-=5
-            except AttributeError:
-                i-=1
+            h = str(i)
             
+            try:
+                des_key = p.description.get( o )
+                description = des_key_validate( des_key, x )
+                if(description != False):
+                    break
+            except ResourceNotFoundError:
+                i-=1
+                print(i)
+            o = (x + gen + h)
         
         print(des_key)
         
-        description = pykemon.get(description = des_key)
+#         description = pykemon.get(description = des_key)
         print(description)
         print("am i even")
         context = RequestContext(request, {'name':p.name, 'description':description,    
