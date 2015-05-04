@@ -40,6 +40,8 @@ INSTALLED_APPS = (
     'pokepy',
     'django_extensions',
     'pykemon',
+    'simplejson',
+    'requests',
 )
 
 MIDDLEWARE_CLASSES = (

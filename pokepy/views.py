@@ -7,7 +7,6 @@ from django import forms
 from pokepy.forms import SearchForm
 from importlib import import_module
 import pykemon,simplejson
-from pykemon import api,request,models
 
 from .models import Pokemon, Moves, Abilities
 from pykemon.exceptions import ResourceNotFoundError
@@ -159,24 +158,28 @@ def search(request):
 #             desc = str(ldesc).replace('}','')
         print("description:  " + str(descr))
         print( "des_key: " + des_key + "\ndescription: " + str(desc) )
-        desc = mydict[o]
+#         desc = mydict[o]
         
         
         if(descr == ""):
             descr = (x + "_gen_6")
 #             print(type(descr) + descr)
-        py = desc[0]    
-        choice = {"description":py}
-        
-        print("desc:  " + desc)
-        
-        print("py: " + py)
-        print("choice = " + choice["description"])
-        
-        d = pykemon.request.make_request(choice)
-        print(d)
+#         py = desc[0]    
+#         choice = {"description":py}
+#         
+#         print("desc:  " + desc)
+#         
+#         print("py: " + py)
+#         print("choice = " + choice["description"])
+#         
+#         d = pykemon.request.make_request(choice)
+#         print(d)
 #         d = pykemon.request._request(py)
 #         description = pykemon.get(description = des_key)
+        print("des_key=" + des_key)
+#         dform = des_key.replace((p.name + "_gen_6"),"")
+#         print("dform="+dform)
+        d = pykemon.get(description_id=des_key)
         
         print("am i even")
         context = RequestContext(request, {'name':p.name, 'd':d,    
