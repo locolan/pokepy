@@ -131,27 +131,51 @@ def search(request):
         h = str( i )
         print( "h: " + h )
         
-        foo = True
+        descr = ""
         
         des_key = o
-        
+        # SELECT descriptions FROM pokepy_pokemon
+        # finds p's gen 6 description 
         for d in Pokemon.objects.raw('SELECT *, description FROM pokepy_pokemon WHERE name = %s', [p.name]):
             print(type(d.description))
             print(d.description)
             mydict = dict((k.strip(), v.strip()) for k,v in (item.split(':') for item in  d.description.split(',')))
             print("mydict:  " + str(mydict))
-            descr = mydict["\'" + des_key + "\'"]
-            adesc = str(descr).split('\'')
-            ldesc = adesc[1]
-            desc = str(ldesc).split('}')
-            print("description:  " + str(desc))
+            for f in mydict:
+#                 f = f.replace("\'","")
+#                 f = f.replace("}","")
+#                 f = f.replace("{","")
+                print("f= " + f)
+                print("descr: " + descr)
+                if(f == (x + "_gen_6")):
+                    a = (x + "_gen_6")
+                    descr = mydict[a]
+                    print("descr: " + descr)
+                    break
+                
+             
+#             adesc = str(descr).replace('\'','')
+#             ldesc = adesc[1]
+#             desc = str(ldesc).replace('}','')
+        print("description:  " + str(descr))
         print( "des_key: " + des_key + "\ndescription: " + str(desc) )
+        desc = mydict[o]
         
-        # SELECT descriptions FROM pokepy_pokemon 
-        # SELECT name FROM 
-        print(desc[0])
-        py = desc[0][7:]
-        d = pykemon.request._request(py)
+        
+        if(descr == ""):
+            descr = (x + "_gen_6")
+#             print(type(descr) + descr)
+        py = desc[0]    
+        choice = {"description":py}
+        
+        print("desc:  " + desc)
+        
+        print("py: " + py)
+        print("choice = " + choice["description"])
+        
+        d = pykemon.request.make_request(choice)
+        print(d)
+#         d = pykemon.request._request(py)
 #         description = pykemon.get(description = des_key)
         
         print("am i even")
@@ -164,6 +188,5 @@ def search(request):
         
     except AttributeError:
         return HttpResponseRedirect('/')
-    
     
     
